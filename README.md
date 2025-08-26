@@ -1,2 +1,6 @@
 # non-transitive-dice
-Who thought about this (mindbending shit)...
+Funny ?
+Confusing ?
+Not possible ?
+
+WHAT EVEN IS THIS ???
