@@ -1,6 +1,5 @@
 import random as r
 import time as t
-import matplotlib.pyplot as plt
 
 class Spieler:
     def __init__(self, name: str):
@@ -20,7 +19,6 @@ class Spieler:
 
         self.ergebnisse = []
         self.win_count = 0
-        self.stats = {}
         
     def würfeln(self, würfe: int, zweiter_wurf: bool):
         for _ in range(0, würfe):
@@ -29,52 +27,35 @@ class Spieler:
                 erster_wurf = erster_wurf + r.choice(self.würfel)
             self.ergebnisse.append(erster_wurf)
 
-    def statistik(self):
-        for i in list(set(self.ergebnisse)):
-            self.stats[i] = self.ergebnisse.count(i)
-        bars = plt.bar(self.stats.keys(), self.stats.values())
+spieler_count: int = int(input("\nWie viele Spieler sollen würfeln? [2/3]\n$ "))
+spieler_liste: list = []
 
-        for bar in bars:
-            height = bar.get_height()
-            plt.text(
-                bar.get_x() + bar.get_width() / 2,
-                height,
-                str(height),
-                ha='center', va='bottom'
-            )
-
-        plt.xlabel("Zahl")
-        plt.ylabel("Anzahl")
-        plt.title(self.name)
-        plt.show()
-
-spieler1 = Spieler(name = "1")
-spieler2 = Spieler(name = "2")
+for i in range(0, spieler_count):
+    spieler_liste.append(Spieler(name = str(i + 1)))
 
 würfe = int(input("\nWie oft soll gewürfelt werden?\n $ "))
-zweiter_wurf = input("\nSollen die beiden Spieler mit zwei Würfeln spielen? [y/N]\n$ ")
+
+zweiter_wurf = input("\nSollen die Spieler mit zwei Würfeln spielen? [y/N]\n$ ")
+   
 if zweiter_wurf == "y":
     starttime = t.time()
-    spieler1.würfeln(würfe = würfe, zweiter_wurf = True)
-    spieler2.würfeln(würfe = würfe, zweiter_wurf = True)
+    for spieler in spieler_liste:
+        spieler.würfeln(würfe = würfe, zweiter_wurf = True)
 else:
     starttime = t.time()
-    spieler1.würfeln(würfe = würfe, zweiter_wurf = False)
-    spieler2.würfeln(würfe = würfe, zweiter_wurf = False)
+    for spieler in spieler_liste:
+        spieler.würfeln(würfe = würfe, zweiter_wurf = False)
 
-for i in range(0, len(spieler1.ergebnisse) - 1):
-    if spieler1.ergebnisse[i] > spieler2.ergebnisse[i]:
-        spieler1.win_count = spieler1.win_count + 1
-    elif spieler1.ergebnisse[i] < spieler2.ergebnisse[i]:
-        spieler2.win_count = spieler2.win_count + 1
+for i in range(0, len(spieler_liste[0].ergebnisse)):
+    vergleich = []
+    for spieler in spieler_liste:
+        vergleich.append(spieler.ergebnisse[i])
+    spieler_liste[vergleich.index(max(vergleich))].win_count = spieler_liste[vergleich.index(max(vergleich))].win_count + 1
 
 endtime = t.time()
 input(f"\nDas Würfeln dauerte {endtime - starttime} Sekunden...")
 
-input(f"Von {würfe} Würfeln hatte Spieler {spieler1.name} {spieler1.win_count}-mal die höher Zahl gewürfelt und der Spieler {spieler2.name} {spieler2.win_count}-mal...")
-input(f"Gewinnchance Spieler {spieler1.name} mit Würfel {spieler1.würfel}: {spieler1.win_count / würfe * 100}%\nGewinnchance Spieler {spieler2.name} mit Würfel {spieler2.würfel}: {spieler2.win_count / würfe * 100}%\n")
+for spieler in spieler_liste:
+    input(f"\nDer Spieler {spieler.name} mit dem Würfel {spieler.würfel} gewann {spieler.win_count} von {würfe} Würfen und hat somit eine Gewinnchance von {spieler.win_count / würfe * 100}% ...")
 
-spieler1.statistik()
-input()
-spieler2.statistik()
-input()
+input("\nEXIT\n\n")
