@@ -54,8 +54,9 @@ for i in range(0, len(spieler_liste[0].ergebnisse)):
 
 endtime = t.time()
 input(f"\nDas Würfeln dauerte {endtime - starttime} Sekunden...")
+input(f"\nDie erwarteten Ergebnisse bei einem sechsseitigen fairen Würfel wären:\nabsolute Gewinnhäufigkeit: {würfe / len(spieler_liste)}\nrelative Gewinnhäufigkeit: {100 / len(spieler_liste)}%")
 
 for spieler in spieler_liste:
-    input(f"\nDer Spieler {spieler.name} mit dem Würfel {spieler.würfel} gewann {spieler.win_count} von {würfe} Würfen und hat somit eine Gewinnchance von {spieler.win_count / würfe * 100}% ...")
+    input(f"\nDer Spieler {spieler.name} mit dem Würfel {spieler.würfel} gewann {spieler.win_count} von {würfe} Würfen und hat somit eine relative Gewinnhäufigkeit von {spieler.win_count / würfe * 100}% ...")
 
 input("\nEXIT\n\n")
